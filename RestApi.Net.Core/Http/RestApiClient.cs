@@ -76,16 +76,14 @@ namespace RestApi.Net.Core.Http
         /// </summary>
         /// <typeparam name="TRequestModel">request Model</typeparam>
         /// <typeparam name="TResponseModel">response tModel</typeparam>
-        ///<param name="url">url to send post request</param>
+        ///<param name="requestUri">requestUri to send post request</param>
         /// <param name="requestModel">request Model</param>
         /// <returns></returns>
-        public async Task<TResponseModel> PostAsync<TRequestModel, TResponseModel>(string url,
-            TRequestModel requestModel)
-            where TResponseModel : class
+        public async Task<TResponseModel> PostAsync<TRequestModel, TResponseModel>(string requestUri, TRequestModel requestModel) where TResponseModel : class
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
             if (requestModel == null)
@@ -96,7 +94,7 @@ namespace RestApi.Net.Core.Http
             HttpResponseMessage response;
             using (var byteContent = GetByteArrayContent(requestModel))
             {
-                response = await _client.PostAsync(url, byteContent).ConfigureAwait(false);
+                response = await _client.PostAsync(requestUri, byteContent).ConfigureAwait(false);
             }
 
             return await ResponseModel<TResponseModel>(response);
@@ -106,17 +104,17 @@ namespace RestApi.Net.Core.Http
         /// Send HTTP post request
         /// </summary>
         /// <typeparam name="TResponseModel">response tModel</typeparam>
-        ///<param name="url">url to send post request</param>
+        ///<param name="requestUri">requestUri to send post request</param>
         /// <returns>Response Model</returns>
-        public async Task<TResponseModel> PostAsync<TResponseModel>(string url)
+        public async Task<TResponseModel> PostAsync<TResponseModel>(string requestUri)
             where TResponseModel : class
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
-            HttpResponseMessage response = await _client.PostAsync(url, null).ConfigureAwait(false);
+            HttpResponseMessage response = await _client.PostAsync(requestUri, null).ConfigureAwait(false);
 
             return await ResponseModel<TResponseModel>(response);
         }
@@ -125,25 +123,25 @@ namespace RestApi.Net.Core.Http
         /// Send HTTP put request
         /// </summary>
         /// <typeparam name="TRequestModel">request Model</typeparam>
-        /// <param name="url">url to send put request</param>
+        /// <param name="requestUri">requestUri to send put request</param>
         /// <param name="requestModel">model</param>
         /// <returns></returns>
-        public async Task PutAsync<TRequestModel>(string url, TRequestModel requestModel)
+        public async Task PutAsync<TRequestModel>(string requestUri, TRequestModel requestModel)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException($"URL is missing.");
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
             if (requestModel == null)
             {
-                throw new ArgumentNullException($"Request login model is missing.");
+                throw new ArgumentNullException(nameof(requestModel));
             }
 
             HttpResponseMessage response;
             using (var byteContent = GetByteArrayContent(requestModel))
             {
-                response = await _client.PutAsync(url, byteContent).ConfigureAwait(false);
+                response = await _client.PutAsync(requestUri, byteContent).ConfigureAwait(false);
             }
             response.EnsureSuccessResponseStatusCode();
         }
@@ -152,15 +150,15 @@ namespace RestApi.Net.Core.Http
         /// Send HTTP put request with response
         /// </summary>
         /// <typeparam name="TResponseModel">Response Model</typeparam>
-        /// <param name="url">url to send put request</param>
+        /// <param name="requestUri">requestUri to send put request</param>
         /// <returns>TResponseModel</returns>
-        public async Task<TResponseModel> PutAsync<TResponseModel>(string url) where TResponseModel : class
+        public async Task<TResponseModel> PutAsync<TResponseModel>(string requestUri) where TResponseModel : class
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException($"URL is missing.");
+                throw new ArgumentNullException(nameof(requestUri));
             }
-            HttpResponseMessage response = await _client.PutAsync(url, null).ConfigureAwait(false);
+            HttpResponseMessage response = await _client.PutAsync(requestUri, null).ConfigureAwait(false);
 
             return await ResponseModel<TResponseModel>(response);
         }
@@ -168,16 +166,16 @@ namespace RestApi.Net.Core.Http
         /// <summary>
         /// Send HTTp put request
         /// </summary>
-        /// <param name="url">url to send put request</param>
+        /// <param name="requestUri">requestUri to send put request</param>
         /// <returns></returns>
-        public async Task PutAsync(string url)
+        public async Task PutAsync(string requestUri)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException($"URL is missing.");
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
-            var response = await _client.PutAsync(url, null);
+            var response = await _client.PutAsync(requestUri, null);
 
             response.EnsureSuccessResponseStatusCode();
         }
@@ -187,25 +185,25 @@ namespace RestApi.Net.Core.Http
         /// </summary>
         /// <typeparam name="TRequestModel"></typeparam>
         /// <typeparam name="TResponseModel"></typeparam>
-        /// <param name="url">url to send put request</param>
+        /// <param name="requestUri">requestUri to send put request</param>
         /// <param name="requestModel">request Model</param>
         /// <returns></returns>
-        public async Task<TResponseModel> PutAsync<TRequestModel, TResponseModel>(string url, TRequestModel requestModel) where TResponseModel : class
+        public async Task<TResponseModel> PutAsync<TRequestModel, TResponseModel>(string requestUri, TRequestModel requestModel) where TResponseModel : class
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(requestUri))
             {
-                throw new ArgumentNullException($"URL is missing.");
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
             if (requestModel == null)
             {
-                throw new ArgumentNullException($"Request login model is missing.");
+                throw new ArgumentNullException(nameof(requestModel));
             }
 
             HttpResponseMessage response;
             using (var byteContent = GetByteArrayContent(requestModel))
             {
-                response = await _client.PutAsync(url, byteContent).ConfigureAwait(false);
+                response = await _client.PutAsync(requestUri, byteContent).ConfigureAwait(false);
             }
 
             return await ResponseModel<TResponseModel>(response);
@@ -215,32 +213,32 @@ namespace RestApi.Net.Core.Http
         /// Send HTTP Get request
         /// </summary>
         /// <typeparam name="TResponseModel">Response model</typeparam>
-        /// <param name="url">url to send get request</param>
+        /// <param name="requestUri">requestUri to send get request</param>
         /// <returns></returns>
-        public async Task<TResponseModel> GetAsync<TResponseModel>(string url)
+        public async Task<TResponseModel> GetAsync<TResponseModel>(string requestUri)
             where TResponseModel : class
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(requestUri))
             {
-                throw new ArgumentException(nameof(url));
+                throw new ArgumentException(nameof(requestUri));
             }
 
-            var response = await _client.GetAsync(url).ConfigureAwait(false);
+            var response = await _client.GetAsync(requestUri).ConfigureAwait(false);
 
             return await ResponseModel<TResponseModel>(response);
         }
 
         ///<summary>Send a GET request to the specified Uri and return the response body as a byte</summary>
-        /// <param name="url"> The Uri the request is sent to.</param>
+        /// <param name="requestUri"> The Uri the request is sent to.</param>
         /// <returns>byte array</returns>
-        public async Task<byte[]> GetByteArrayAsync(string url)
+        public async Task<byte[]> GetByteArrayAsync(string requestUri)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(requestUri))
             {
-                throw new ArgumentException(nameof(url));
+                throw new ArgumentException(nameof(requestUri));
             }
 
-            return await _client.GetByteArrayAsync(new Uri(url)).ConfigureAwait(false);
+            return await _client.GetByteArrayAsync(new Uri(requestUri)).ConfigureAwait(false);
         }
 
         #endregion
@@ -425,8 +423,7 @@ namespace RestApi.Net.Core.Http
             if (addDefaultHeader)
             {
                 ClearHeader();
-                _client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue(GetApplicationHeaderValue(_acceptType)));
+                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(GetApplicationHeaderValue(_acceptType)));
             }
         }
 
@@ -460,7 +457,7 @@ namespace RestApi.Net.Core.Http
             response.EnsureSuccessResponseStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            if (typeof(TResponseModel) == typeof(String))
+            if (typeof(TResponseModel) == typeof(string))
             {
                 //If we want the raw result, then do not deserialize 
                 return responseContent as TResponseModel;

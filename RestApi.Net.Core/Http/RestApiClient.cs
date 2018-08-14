@@ -27,7 +27,6 @@ namespace RestApi.Net.Core.Http
         private JsonSerializerSettings _jsonSerializerSettings;
         private JsonSerializerSettings _jsonDeSerializerSettings;
 
-
         #endregion
 
         #region Constructor/ Destructor
@@ -106,8 +105,7 @@ namespace RestApi.Net.Core.Http
         /// <typeparam name="TResponseModel">response tModel</typeparam>
         ///<param name="requestUri">requestUri to send post request</param>
         /// <returns>Response Model</returns>
-        public async Task<TResponseModel> PostAsync<TResponseModel>(string requestUri)
-            where TResponseModel : class
+        public async Task<TResponseModel> PostAsync<TResponseModel>(string requestUri) where TResponseModel : class
         {
             if (string.IsNullOrWhiteSpace(requestUri))
             {
@@ -175,7 +173,7 @@ namespace RestApi.Net.Core.Http
                 throw new ArgumentNullException(nameof(requestUri));
             }
 
-            var response = await _client.PutAsync(requestUri, null);
+            var response = await _client.PutAsync(requestUri, null).ConfigureAwait(false);
 
             response.EnsureSuccessResponseStatusCode();
         }
@@ -220,7 +218,7 @@ namespace RestApi.Net.Core.Http
         {
             if (string.IsNullOrEmpty(requestUri))
             {
-                throw new ArgumentException(nameof(requestUri));
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
             var response = await _client.GetAsync(requestUri).ConfigureAwait(false);
@@ -235,7 +233,7 @@ namespace RestApi.Net.Core.Http
         {
             if (string.IsNullOrEmpty(requestUri))
             {
-                throw new ArgumentException(nameof(requestUri));
+                throw new ArgumentNullException(nameof(requestUri));
             }
 
             return await _client.GetByteArrayAsync(new Uri(requestUri)).ConfigureAwait(false);
@@ -312,24 +310,23 @@ namespace RestApi.Net.Core.Http
         #region Public Methods
 
         /// <summary>
-        /// Set Content Type
+        /// Set Content Type header
         /// </summary>
         /// <param name="value"></param>
-        public void SetContenType(MediaType value)
+        public void SetContenTypeHeader(MediaType value)
         {
             _contenType = value;
         }
 
         /// <summary>
-        /// Set Access
+        /// Set Accept header 
         /// </summary>
         /// <param name="value"></param>
-        public void SetAcceptType(MediaType value)
+        public void SetAcceptTypeHeader(MediaType value)
         {
             _acceptType = value;
             _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue(GetApplicationHeaderValue(value)));
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(GetApplicationHeaderValue(value)));
         }
 
         #endregion

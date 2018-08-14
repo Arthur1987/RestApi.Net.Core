@@ -1,6 +1,7 @@
 # RestApi.Net.Core
-.NET core rest api Library
-Code example
+.NET core rest api is simple library to send HTTP request, it was implemented generic, support JSON(Newtonsoft.Json) and XML serialization and deserialization.
+
+Here is code example
 
     class Program
     {
